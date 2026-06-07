@@ -15,6 +15,7 @@ SmartCalc/
 ├── docs/             文档和报告
 ├── tests/            测试代码或测试数据
 ├── .gitignore        Git 忽略规则
+├── CMakeLists.txt    CMake文件
 └── README.md         项目说明文档
 ```
 
