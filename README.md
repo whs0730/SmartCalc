@@ -11,7 +11,6 @@ C++ 课程大作业：智能计算器项目。
 ```text
 SmartCalc/
 ├── src/              源代码
-├── include/          头文件
 ├── docs/             文档和报告
 ├── tests/            测试代码或测试数据
 ├── .gitignore        Git 忽略规则
