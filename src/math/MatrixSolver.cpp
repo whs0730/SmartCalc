@@ -2,16 +2,19 @@
 
 #include <cmath>
 #include <stdexcept>
-//求行列式的值
+
+// 使用第一行展开计算行列式。
 double MatrixSolver::determinant(Matrix matrix) {
     if (matrix.getRow() != matrix.getCol()) {
-        throw invalid_argument("Determinant requires a square matrix.");
+        throw std::invalid_argument(
+            "Determinant requires a square matrix."
+        );
     }
 
     int size = matrix.getRow();
 
     if (size == 0) {
-        throw invalid_argument("Matrix cannot be empty.");
+        throw std::invalid_argument("Matrix cannot be empty.");
     }
 
     if (size == 1) {
@@ -39,16 +42,17 @@ double MatrixSolver::determinant(Matrix matrix) {
 
     return result;
 }
-//高斯约旦消元求逆矩阵
+
+// 使用高斯-约旦消元法计算逆矩阵。
 Matrix MatrixSolver::inverse(Matrix matrix) {
     if (matrix.getRow() != matrix.getCol()) {
-        throw invalid_argument("Inverse requires a square matrix.");
+        throw std::invalid_argument("Inverse requires a square matrix.");
     }
 
     int size = matrix.getRow();
 
     if (size == 0) {
-        throw invalid_argument("Matrix cannot be empty.");
+        throw std::invalid_argument("Matrix cannot be empty.");
     }
 
     Matrix result(size, size);
@@ -62,15 +66,15 @@ Matrix MatrixSolver::inverse(Matrix matrix) {
 
         for (int row = col + 1; row < size; row++) {
             if (
-                abs(matrix.get(row, col))
-        > abs(matrix.get(maxRow, col))
-                ) {
+                std::abs(matrix.get(row, col))
+                > std::abs(matrix.get(maxRow, col))
+            ) {
                 maxRow = row;
             }
         }
 
-        if (abs(matrix.get(maxRow, col)) < 0.0000001) {
-            throw invalid_argument("Matrix has no inverse.");
+        if (std::abs(matrix.get(maxRow, col)) < 0.0000001) {
+            throw std::invalid_argument("Matrix has no inverse.");
         }
 
         if (maxRow != col) {
@@ -116,19 +120,19 @@ Matrix MatrixSolver::inverse(Matrix matrix) {
 
     return result;
 }
-//求解线性方程
-vector<double> MatrixSolver::solve(
-    Matrix matrix,
-    vector<double> answer
-) {
+
+// 使用高斯消元和回代求解线性方程组。
+vector<double> MatrixSolver::solve(Matrix matrix,vector<double> answer) {
     if (matrix.getRow() != matrix.getCol()) {
-        throw invalid_argument("Equation matrix must be square.");
+        throw std::invalid_argument(
+            "Equation matrix must be square."
+        );
     }
 
     int size = matrix.getRow();
 
-    if (size == 0 || answer.size() != size) {
-        throw invalid_argument("Equation size is incorrect.");
+    if (size == 0 || answer.size() != static_cast<unsigned int>(size)) {
+        throw std::invalid_argument("Equation size is incorrect.");
     }
 
     for (int col = 0; col < size; col++) {
@@ -136,15 +140,17 @@ vector<double> MatrixSolver::solve(
 
         for (int row = col + 1; row < size; row++) {
             if (
-                abs(matrix.get(row, col))
-        > abs(matrix.get(maxRow, col))
-                ) {
+                std::abs(matrix.get(row, col))
+                > std::abs(matrix.get(maxRow, col))
+            ) {
                 maxRow = row;
             }
         }
 
-        if (abs(matrix.get(maxRow, col)) < 0.0000001) {
-            throw invalid_argument("Equation has no unique solution.");
+        if (std::abs(matrix.get(maxRow, col)) < 0.0000001) {
+            throw std::invalid_argument(
+                "Equation has no unique solution."
+            );
         }
 
         if (maxRow != col) {
@@ -189,12 +195,9 @@ vector<double> MatrixSolver::solve(
 
     return result;
 }
-//求余子式 
-Matrix MatrixSolver::getMinor(
-    Matrix matrix,
-    int removeRow,
-    int removeCol
-) {
+
+// 删除指定行和列，得到余子式矩阵。
+Matrix MatrixSolver::getMinor(Matrix matrix,int removeRow,int removeCol) {
     int size = matrix.getRow();
     Matrix result(size - 1, size - 1);
     int resultRow = 0;

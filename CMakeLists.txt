@@ -219,6 +219,10 @@ if(SMARTCALC_BUILD_TESTS)
     target_link_libraries(test_matrix PRIVATE SmartCalc::Math)
     add_test(NAME matrix COMMAND test_matrix)
 
+    add_executable(test_math EXCLUDE_FROM_ALL tests/test_math.cpp)
+    target_link_libraries(test_math PRIVATE SmartCalc::Math)
+    add_test(NAME math COMMAND test_math)
+
     add_executable(test_exception EXCLUDE_FROM_ALL tests/test_exception.cpp "src/math/MatrixSolver.cpp")
     target_link_libraries(test_exception PRIVATE SmartCalc::Core SmartCalc::Math)
     add_test(NAME exception COMMAND test_exception)
