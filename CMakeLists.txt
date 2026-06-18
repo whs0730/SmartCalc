@@ -73,8 +73,8 @@ set(SMARTCALC_GUI_SOURCES
     src/gui/MainWindow.h
     src/gui/BasicCalcPage.cpp
     src/gui/BasicCalcPage.h
-    src/gui/ScientificPage.cpp
-    src/gui/ScientificPage.h
+    src/gui/UnitPage.cpp
+    src/gui/UnitPage.h
     src/gui/MatrixPage.cpp
     src/gui/MatrixPage.h
     src/gui/PlotPage.cpp
@@ -127,11 +127,11 @@ if(SMARTCALC_ENABLE_QT)
             endif()
         endforeach()
 
-        find_package(QT NAMES Qt6 Qt5 QUIET COMPONENTS Widgets)
+        find_package(QT NAMES Qt6 Qt5 QUIET COMPONENTS Widgets Charts)
     endif()
 
     if(QT_FOUND)
-        find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
+        find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Charts)
 
         set(CMAKE_AUTOMOC ON)
         set(CMAKE_AUTOUIC ON)
@@ -155,7 +155,10 @@ target_link_libraries(
 )
 
 if(SMARTCALC_QT_AVAILABLE)
-    target_link_libraries(SmartCalcGui PUBLIC Qt${QT_VERSION_MAJOR}::Widgets)
+    target_link_libraries(SmartCalcGui PUBLIC 
+Qt${QT_VERSION_MAJOR}::Widgets
+Qt${QT_MAJOR_VERSION}::Charts
+)
 endif()
 
 set_property(
