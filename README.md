@@ -98,19 +98,21 @@ SmartCalc/
 
 ### src/gui
 
-GUI 模块目前为空，计划使用 Qt Widgets 实现。
+GUI 已使用 Qt Widgets 实现。
 
 | 文件                      | 意义                 |
 | ----------------------- | ------------------ |
 | `MainWindow.h/.cpp`     | 主窗口，负责菜单、导航和功能页面组织 |
 | `BasicCalcPage.h/.cpp`  | 普通四则运算页面           |
-| `ScientificPage.h/.cpp` | 科学计算和单位转换页面        |
+| `UnitPage.h/.cpp` 	  | 单位转换页面        |
 | `MatrixPage.h/.cpp`     | 矩阵输入、计算和结果显示页面     |
 | `PlotPage.h/.cpp`       | 函数输入、采样和曲线绘制页面     |
 | `HistoryPage.h/.cpp`    | 历史记录显示和管理页面        |
 | `SettingsDialog.h/.cpp` | 程序设置对话框            |
 
 GUI 只负责接收输入和显示结果，具体算法应放在 `core` 或 `math` 中。
+##注意：
+各接口在各实现文件的onXXX函数中，亟待完善
 
 ### src/main.cpp
 
