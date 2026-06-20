@@ -46,6 +46,7 @@ void HistoryWidget::refreshTable() {
 void HistoryWidget::onClearClicked() {
 	if (QMessageBox::question(this, "确认", "确定清空所有历史记录吗？") == QMessageBox::Yes) {
 		clearHistory();
+		emit historyCleared();
 	}
 }
 

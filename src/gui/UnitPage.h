@@ -12,6 +12,9 @@ class UnitWidget : public QWidget {
 	Q_OBJECT
 public:
 	explicit UnitWidget(QWidget *parent = nullptr);
+
+signals:
+	void historyRequested(const QString &type, const QString &input, const QString &result);
 	
 	private slots:
 	void onCategoryChanged(int index);

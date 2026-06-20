@@ -3,6 +3,7 @@
 #include <stdexcept>
 
 Matrix::Matrix(int r, int c) {
+    // 行列数必须同时为 0，或者同时为正数。
     if (r < 0 || c < 0) {
         throw invalid_argument("Matrix row and column cannot be negative.");
     }
@@ -86,6 +87,7 @@ Matrix Matrix::dot(Matrix m) const {
 
     Matrix result(row, m.col);
 
+    // result[i][j] 是当前行和当前列对应元素乘积之和。
     for (int i = 0; i < row; i++) {
         for (int j = 0; j < m.col; j++) {
             for (int k = 0; k < col; k++) {
@@ -112,6 +114,7 @@ Matrix Matrix::multiply(double num) const {
 Matrix Matrix::transpose() const {
     Matrix result(col, row);
 
+    // 转置后原来的行列位置互换。
     for (int i = 0; i < row; i++) {
         for (int j = 0; j < col; j++) {
             result.data[j][i] = data[i][j];

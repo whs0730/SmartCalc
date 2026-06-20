@@ -3,13 +3,16 @@
 #include <vector>
 #include "storage/HistoryRecord.h"
 
+// 历史记录管理类，负责记录的增删查和文件读写。
 class HistoryManager
 {
 public:
     HistoryManager();
-    void addRecord(const std::string& expression,const std::string& result);
+
+    void addRecord(const std::string& expression, const std::string& result);
     void removeRecord(int index);
     void clearHistory();
+
     void saveToFile(const std::string& fileName);
     void loadFromFile(const std::string& fileName);
 
@@ -18,5 +21,4 @@ public:
 
 private:
     std::vector<HistoryRecord> records;
-
 };

@@ -1,7 +1,8 @@
 #include "math/FunctionSampler.h"
 
 #include <stdexcept>
-vector<SamplePoint> FunctionSampler::sample(double start,double end,int pointCount,double (*function)(double)) const {
+
+vector<SamplePoint> FunctionSampler::sample(double start, double end, int pointCount, double (*function)(double)) const {
     if (start >= end) {
         throw invalid_argument(
             "Sample interval start must be less than end."
@@ -21,10 +22,12 @@ vector<SamplePoint> FunctionSampler::sample(double start,double end,int pointCou
     vector<SamplePoint> result(pointCount);
     double step = (end - start) / (pointCount - 1);
 
+    // 两端点都参与采样，保证曲线覆盖完整区间。
     for (int i = 0; i < pointCount; i++) {
         double x = start + step * i;
         result[i].x = x;
         result[i].y = function(x);
     }
+
     return result;
 }

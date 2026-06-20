@@ -202,6 +202,42 @@ if(SMARTCALC_QT_AVAILABLE AND QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(SmartCalc)
 endif()
 
+if(WIN32 AND SMARTCALC_QT_AVAILABLE)
+    get_target_property(SMARTCALC_QMAKE_EXECUTABLE Qt${QT_VERSION_MAJOR}::qmake IMPORTED_LOCATION)
+    if(SMARTCALC_QMAKE_EXECUTABLE)
+        get_filename_component(SMARTCALC_QT_BIN_DIR "${SMARTCALC_QMAKE_EXECUTABLE}" DIRECTORY)
+    else()
+        get_filename_component(SMARTCALC_QT_CMAKE_DIR "${Qt${QT_VERSION_MAJOR}_DIR}" ABSOLUTE)
+        get_filename_component(SMARTCALC_QT_PREFIX "${SMARTCALC_QT_CMAKE_DIR}/../../.." ABSOLUTE)
+        set(SMARTCALC_QT_BIN_DIR "${SMARTCALC_QT_PREFIX}/bin")
+    endif()
+
+    find_program(
+        SMARTCALC_WINDEPLOYQT_EXECUTABLE
+        NAMES windeployqt windeployqt.exe
+        HINTS "${SMARTCALC_QT_BIN_DIR}"
+        NO_DEFAULT_PATH
+    )
+
+    if(SMARTCALC_WINDEPLOYQT_EXECUTABLE)
+        add_custom_command(
+            TARGET SmartCalc
+            POST_BUILD
+            COMMAND "${SMARTCALC_WINDEPLOYQT_EXECUTABLE}"
+                    $<$<CONFIG:Debug>:--debug>
+                    $<$<CONFIG:Release>:--release>
+                    $<$<CONFIG:RelWithDebInfo>:--release>
+                    $<$<CONFIG:MinSizeRel>:--release>
+                    --no-translations
+                    "$<TARGET_FILE:SmartCalc>"
+            COMMAND_EXPAND_LISTS
+            COMMENT "Deploying Qt runtime files with windeployqt"
+        )
+    else()
+        message(WARNING "windeployqt was not found; run SmartCalc with the Qt bin directory in PATH.")
+    endif()
+endif()
+
 source_group(TREE "${PROJECT_SOURCE_DIR}/src" PREFIX "Source Files" FILES
     src/main.cpp
     ${SMARTCALC_CORE_SOURCES}
@@ -233,4 +269,8 @@ if(SMARTCALC_BUILD_TESTS)
     add_executable(test_storage EXCLUDE_FROM_ALL tests/test_storage.cpp)
     target_link_libraries(test_storage PRIVATE SmartCalc::Storage SmartCalc::Utils)
     add_test(NAME storage COMMAND test_storage)
+
+    add_executable(test_utils EXCLUDE_FROM_ALL tests/test_utils.cpp)
+    target_link_libraries(test_utils PRIVATE SmartCalc::Utils)
+    add_test(NAME utils COMMAND test_utils)
 endif()

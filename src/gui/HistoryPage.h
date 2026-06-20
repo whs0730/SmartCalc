@@ -21,7 +21,8 @@ public:
 	void clearHistory();
 	
 signals:
-	void historyItemDoubleClicked(const QString &input); // 点击时发送信号
+	void historyItemDoubleClicked(const QString &input);
+	void historyCleared();
 	
 	private slots:
 	void onClearClicked();

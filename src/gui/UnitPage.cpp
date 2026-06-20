@@ -144,7 +144,13 @@ void UnitWidget::onConvertClicked() {
 	
 	try {
 		double result = convert(value, fromIdx, toIdx, categoryIdx);
-		resultEdit->setText(QString::number(result, 'f', 6));
+		QString resultText = QString::number(result, 'f', 6);
+		resultEdit->setText(resultText);
+		emit historyRequested(
+			"Unit",
+			inputText + " " + fromUnitCombo->currentText() + " -> " + toUnitCombo->currentText(),
+			resultText
+		);
 	} catch (const std::exception &e) {
 		QMessageBox::warning(this, "转换错误", e.what());
 	}
