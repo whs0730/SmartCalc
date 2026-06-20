@@ -135,32 +135,54 @@ MainWindow
 
 ## 构建与运行
 
-### 只构建核心和测试
+### 运行环境
 
-不需要 Qt 时，可以关闭 GUI，只验证核心模块：
+项目使用 C++17 和 CMake 构建。运行图形界面版本需要准备以下环境：
+
+| 配置项 | 要求 |
+| --- | --- |
+| 操作系统 | Windows |
+| CMake | 3.16 或更高版本 |
+| C++ 编译器 | MSVC 2022 x64，或与 Qt Kit 匹配的编译器 |
+| Qt | Qt 6，需安装 Widgets 和 Charts 组件 |
+| Qt 示例路径 | `E:/Qt/6.11.1/msvc2022_64` |
+
+如果只运行核心模块测试，可以不启用 Qt；如果运行 GUI，需要让 CMake 能找到 Qt 安装目录。可以在配置前设置：
+
+```powershell
+$env:CMAKE_PREFIX_PATH="E:\Qt\6.11.1\msvc2022_64"
+```
+
+### 运行核心测试
+
+核心测试不依赖 Qt，适合先检查表达式、矩阵、存储和工具函数是否正常：
 
 ```powershell
 cmake -S . -B out/core-tests -DSMARTCALC_ENABLE_QT=OFF -DSMARTCALC_BUILD_TESTS=ON
-cmake --build out/core-tests
+cmake --build out/core-tests --target test_expression test_matrix test_math test_exception test_storage test_utils
 ctest --test-dir out/core-tests --output-on-failure
 ```
 
-### 构建 Qt 图形界面
+### 运行图形界面
 
-GUI 需要安装 Qt Widgets 和 Qt Charts。Windows 上如果使用 `E:/Qt/6.11.1/msvc2022_64` 这一类 Qt Kit，编译器也要使用 MSVC，不要用 MinGW 去链接 MSVC 版 Qt。
+图形界面需要启用 Qt，并使用和 Qt Kit 匹配的 MSVC x64 环境。命令行构建示例：
 
 ```powershell
-cmake -S . -B out/gui -DSMARTCALC_ENABLE_QT=ON -DSMARTCALC_BUILD_TESTS=OFF
-cmake --build out/gui
+$env:CMAKE_PREFIX_PATH="E:\Qt\6.11.1\msvc2022_64"
+cmake -S . -B out/gui -G "Visual Studio 17 2022" -A x64 -DSMARTCALC_ENABLE_QT=ON -DSMARTCALC_BUILD_TESTS=OFF
+cmake --build out/gui --config Debug
+.\out\gui\Debug\SmartCalc.exe
 ```
 
-CMake 已加入 `windeployqt` 的构建后步骤。正常情况下，GUI 编译完成后会自动复制 Qt 运行时 DLL。如果运行时仍提示缺少 `Qt6Chartsd.dll`，可以检查：
+如果在 Visual Studio 中打开项目，可以在 CMake 配置中保持以下选项：
 
-- Qt 安装目录中是否存在 `bin/Qt6Chartsd.dll`。
-- 是否安装了 Qt Charts 组件。
-- 是否重新运行过 CMake 配置并重新构建。
-- 是否把 Qt 的 `bin` 目录加入了运行环境，或者手动执行 `windeployqt SmartCalc.exe`。
+```text
+SMARTCALC_ENABLE_QT=ON
+SMARTCALC_BUILD_TESTS=OFF
+CMAKE_PREFIX_PATH=E:/Qt/6.11.1/msvc2022_64
+```
 
+CMake 构建完成后会调用 `windeployqt` 复制 Qt 运行所需文件，生成的 `SmartCalc.exe` 可直接从构建目录启动。
 ### 三角函数是角度还是弧度
 
 当前表达式求值使用弧度制。例如：
