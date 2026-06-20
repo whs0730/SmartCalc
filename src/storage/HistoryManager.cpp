@@ -6,6 +6,7 @@ HistoryManager::HistoryManager(){}
 
 void HistoryManager::addRecord(const std::string& expression, const std::string& result)
 {
+    // 新增记录时统一补上当前时间，调用者只需要传入输入和结果。
     std::string time = TimeUtil::getCurrentTime();
     HistoryRecord record(expression, result, time);
     records.push_back(record);
@@ -33,6 +34,7 @@ std::vector<HistoryRecord> HistoryManager::searchHistory(const std::string& key)
 {
     std::vector<HistoryRecord> result;
 
+    // 表达式、结果、时间三项中任意一项包含关键字，就加入搜索结果。
     for (int i = 0; i < records.size(); i++)
     {
         if (records[i].getExpression().find(key) != std::string::npos ||

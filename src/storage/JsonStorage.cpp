@@ -6,6 +6,7 @@ void JsonStorage::saveHistory(const std::vector<HistoryRecord>& records, const s
 {
     std::ofstream outFile(fileName);
 
+    // 每条历史记录占三行，分隔线用于提高文件可读性。
     for (int i = 0; i < records.size(); i++)
     {
         outFile << records[i].getExpression() << '\n';
@@ -32,6 +33,7 @@ std::vector<HistoryRecord> JsonStorage::loadHistory(const std::string& fileName)
     std::string timestamp;
     std::string line;
 
+    // 读取顺序必须和 saveHistory 中写入顺序一致。
     while (std::getline(inFile, expression))
     {
         std::getline(inFile, result);

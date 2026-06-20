@@ -1,53 +1,50 @@
 #pragma once
-#include<QMainWindow>
-#include<QStack>
-#include<QString>
 
-#include"BasicCalcPage.h"
-#include"MatrixPage.h"
-#include"PlotPage.h"
-#include"UnitPage.h"
+#include <QMainWindow>
+#include <QSettings>
+#include <QString>
 
-#include "math/ComplexNumber.h"
-#include "math/Matrix.h"
-#include "math/MatrixSolver.h"
+#include "BasicCalcPage.h"
+#include "MatrixPage.h"
+#include "PlotPage.h"
+#include "UnitPage.h"
 #include "HistoryPage.h"
 #include "SettingsDialog.h"
+#include "storage/HistoryManager.h"
 
 QT_BEGIN_NAMESPACE
-class QChartView;
+class QTabWidget;
 QT_END_NAMESPACE
 
-class MainWindow:public QMainWindow{
-	Q_OBJECT
+class MainWindow : public QMainWindow {
+    Q_OBJECT
 public:
-	MainWindow(QWidget *parent=nullptr);
-	~MainWindow()=default;
-	
-	
+    explicit MainWindow(QWidget *parent = nullptr);
+    ~MainWindow() = default;
+
 private slots:
-	
-	
-	// 复数相关（构建、实部、虚部、共轭、模）
-	void onComplexFunctionClicked();
-	
-	void onSettingsClicked();
-	void onHistoryDoubleClicked(const QString &input);
-	void onHistoryRequested(const QString &type, const QString &input, const QString &result);
+    void onComplexFunctionClicked();
+    void onSettingsClicked();
+    void onHistoryDoubleClicked(const QString &input);
+    void onHistoryRequested(const QString &type, const QString &input, const QString &result);
+    void onHistoryCleared();
 
 private:
-	void setupUI();
+    void setupUI();
+    void setupMenuBar();
+    void applySettings();
+    void loadHistory();
+    void saveHistory();
+    QString historyFileName() const;
 
-	void setupMenuBar();
-	void applySettings();
-	
-	BasicCalcWidget *calculatorWidget;
-	PlotWidget *plotWidget;
-	MatrixWidget *matrixWidget;
-	UnitWidget *unitWidget;
-	HistoryWidget *historyWidget;
-	SettingsDialog *settingsDialog;
-	
-	QSettings settings;
+    QTabWidget *tabWidget;
+    BasicCalcWidget *calculatorWidget;
+    PlotWidget *plotWidget;
+    MatrixWidget *matrixWidget;
+    UnitWidget *unitWidget;
+    HistoryWidget *historyWidget;
+    SettingsDialog *settingsDialog;
+
+    HistoryManager historyManager;
+    QSettings settings;
 };
-

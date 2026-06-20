@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 
+// 历史记录文件读写类，当前使用简单文本格式保存记录。
 class JsonStorage
 {
 public:

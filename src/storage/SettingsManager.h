@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 
+// 程序设置管理类，保存角度模式、显示精度和主题。
 class SettingsManager
 {
 public:

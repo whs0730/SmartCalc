@@ -3,8 +3,9 @@
 HistoryRecord::HistoryRecord()
     : expression(""), result(""), timestamp("") {}
 
-HistoryRecord::HistoryRecord(const std::string& expression,const std::string& result,const std::string& timestamp): 
-expression(expression), result(result), timestamp(timestamp) {}
+// 直接用已有数据构造历史记录，主要用于从文件读取时恢复对象。
+HistoryRecord::HistoryRecord(const std::string& expression, const std::string& result, const std::string& timestamp)
+    : expression(expression), result(result), timestamp(timestamp) {}
 
 const std::string& HistoryRecord::getExpression() const
 {

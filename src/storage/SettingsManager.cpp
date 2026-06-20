@@ -3,6 +3,7 @@
 
 SettingsManager::SettingsManager()
 {
+    // 默认设置用于程序第一次启动或配置文件不存在时。
     angleMode = "DEG";
     precision = 6;
     theme = "light";
@@ -42,6 +43,7 @@ void SettingsManager::saveSettings(const std::string& fileName)
 {
     std::ofstream fout(fileName);
 
+    // 按固定顺序写入，读取时保持同样顺序即可恢复设置。
     fout << angleMode << '\n';
     fout << precision << '\n';
     fout << theme << '\n';
